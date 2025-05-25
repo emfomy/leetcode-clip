@@ -45,7 +45,7 @@ const MARKDOWN = {
   "<strong>Explanation: </strong>": "Explanation: ",
   '<strong class="example">Example': "**Example",
   "<strong>": "**",
-  "</strong>": "** ",
+  "</strong>": "**",
   "<pre>": "\n```\n",
   "</pre>": "```\n\n",
   "<code>": "`",
@@ -54,6 +54,8 @@ const MARKDOWN = {
   "&gt;": ">",
   "<sup>": "^",
   "</sup>": "",
+  "<sub>": "_",
+  "</sub>": "",
   "	": "", // special tab
   "<span.*?>": "",
   "</span>": "",
