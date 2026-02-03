@@ -68,20 +68,26 @@ const copyText = (isMarkdown, targetObj) => {
   const url = window.location.href;
 
   // Try to find the elements for the old version of the website.
-  let title;
-  let descriptionContent;
-  let text;
-  let html;
 
   // Get title
-  title = targetObj.titleDom.innerText;
+  const rawTitle = targetObj.titleDom.innerText;
+  const cleanTitle = rawTitle.replace(/^\d+\.\s*/, "");
+
+  // Get difficulty
+  const difficulty =
+    targetObj.difficultyDom?.innerText?.trim() ||
+    document.querySelector('div[class*="text-difficulty-"]')?.innerText?.trim() ||
+    "Unknown";
+
+  // Clean URL
+  const cleanUrl = url.replace(/\/description\/?$/, "").replace(/\/$/, "");
 
   // Get main problem description
-  descriptionContent = targetObj.descriptionDom;
+  const descriptionContent = targetObj.descriptionDom;
 
   // Clean the content to be copied
-  text = descriptionContent.textContent.replace(/(\n){2,}/g, "\n\n").trim();
-  html = descriptionContent.innerHTML;
+  const text = descriptionContent.textContent.replace(/(\n){2,}/g, "\n\n").trim();
+  const html = descriptionContent.innerHTML;
 
   // Create a hidden textarea element.
   const hiddenElement = document.createElement("textarea");
@@ -105,16 +111,16 @@ const copyText = (isMarkdown, targetObj) => {
     Object.keys(MARKDOWN).forEach((key) => {
       htmlToMarkdown = htmlToMarkdown.replace(
         new RegExp(key, "g"),
-        MARKDOWN[key],
+        MARKDOWN[key]
       );
     });
     // Format the markdown string and add the title and URL.
-    value = `# [${title}](${url})\n\n${htmlToMarkdown
+    value = `Source: ${cleanUrl}\nTitle: ${cleanTitle}\nDifficulty: ${difficulty}\n\n${htmlToMarkdown
       .replace(/(\n){2,}/g, "\n\n")
       .trim()}`;
   } else {
     // Format the plain text string and add the title and URL.
-    value = `URL: ${url}\n\n${title}\n\n${text}`;
+    value = `Source: ${cleanUrl}\nTitle: ${cleanTitle}\nDifficulty: ${difficulty}\n\n${text}`;
   }
 
   // Set the value of the hidden textarea element.
@@ -136,8 +142,9 @@ setTimeout(() => {
     {
       name: "originalLayout",
       titleDom: document.querySelector("[data-cy=question-title]"),
+      difficultyDom: document.querySelector("[data-cy=question-difficulty]"),
       descriptionDom: document.querySelector(
-        "[data-track-load=description_content]",
+        "[data-track-load=description_content]"
       ),
       useStyle: true,
       style: `
@@ -151,10 +158,11 @@ setTimeout(() => {
     {
       name: "newLayout",
       titleDom: document.querySelector(
-        ".mr-2.text-lg.font-medium.text-label-1.dark\\:text-dark-label-1",
+        ".mr-2.text-lg.font-medium.text-label-1.dark\\:text-dark-label-1"
       ),
+      difficultyDom: document.querySelector('div[class*="text-difficulty-"]'),
       descriptionDom: document.querySelector(
-        "[data-track-load=description_content]",
+        "[data-track-load=description_content]"
       ),
       useStyle: false,
       style: "",
@@ -170,10 +178,11 @@ setTimeout(() => {
     {
       name: "contestLayout",
       titleDom: document.querySelector(
-        "#base_content > div.container > div > div > div.question-title.clearfix > h3",
+        "#base_content > div.container > div > div > div.question-title.clearfix > h3"
       ),
+      difficultyDom: null,
       descriptionDom: document.querySelector(
-        "div.question-content.default-content",
+        "div.question-content.default-content"
       ),
       useStyle: true,
       style: `display: flex;`,
@@ -182,8 +191,9 @@ setTimeout(() => {
     {
       name: "dynamicLayout",
       titleDom: document.querySelector(".text-title-large"),
+      difficultyDom: document.querySelector('div[class*="text-difficulty-"]'),
       descriptionDom: document.querySelector(
-        "[data-track-load=description_content]",
+        "[data-track-load=description_content]"
       ),
       useStyle: true,
       style: `display: flex;`,
