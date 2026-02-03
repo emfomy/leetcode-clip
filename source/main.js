@@ -44,7 +44,6 @@ const MARKDOWN = {
   "<strong>Input: </strong>": "Input: ",
   "<strong>Output: </strong>": "Output: ",
   "<strong>Explanation: </strong>": "Explanation: ",
-  '<strong class="example">Example': "**Example",
   "<strong>": "**",
   "</strong>": "**",
   "<pre>": "\n```\n",
@@ -84,25 +83,29 @@ const copyText = (isMarkdown, targetObj) => {
   text = descriptionContent.textContent.replace(/(\n){2,}/g, "\n\n").trim();
   html = descriptionContent.innerHTML;
 
-  // Removes unwanted elements.
-  html = html
-    .replace(/<div class=".*?" data-headlessui-state=".*?">/g, "")
-    .replace(
-      /<div id=".*?" aria-expanded=".*?" data-headlessui-state=".*?">/g,
-      ""
-    );
-
   // Create a hidden textarea element.
   const hiddenElement = document.createElement("textarea");
 
   let value;
   if (isMarkdown) {
     let htmlToMarkdown = html;
+    // Clean attributes from HTML tags (except img, which we keep only the src URL)
+    htmlToMarkdown = htmlToMarkdown.replace(
+      /<([a-zA-Z0-9]+)([^>]*?)(\/?)>/g,
+      (match, tagName, attrs, selfClosing) => {
+        if (tagName.toLowerCase() === "img") {
+          const srcMatch = attrs.match(/src=["'](.*?)["']/i);
+          return srcMatch ? srcMatch[1] : "";
+        }
+        return `<${tagName}${selfClosing}>`;
+      }
+    );
+
     // Replace HTML elements with markdown equivalents.
     Object.keys(MARKDOWN).forEach((key) => {
       htmlToMarkdown = htmlToMarkdown.replace(
         new RegExp(key, "g"),
-        MARKDOWN[key]
+        MARKDOWN[key],
       );
     });
     // Format the markdown string and add the title and URL.
@@ -134,7 +137,7 @@ setTimeout(() => {
       name: "originalLayout",
       titleDom: document.querySelector("[data-cy=question-title]"),
       descriptionDom: document.querySelector(
-        "[data-track-load=description_content]"
+        "[data-track-load=description_content]",
       ),
       useStyle: true,
       style: `
@@ -148,10 +151,10 @@ setTimeout(() => {
     {
       name: "newLayout",
       titleDom: document.querySelector(
-        ".mr-2.text-lg.font-medium.text-label-1.dark\\:text-dark-label-1"
+        ".mr-2.text-lg.font-medium.text-label-1.dark\\:text-dark-label-1",
       ),
       descriptionDom: document.querySelector(
-        "[data-track-load=description_content]"
+        "[data-track-load=description_content]",
       ),
       useStyle: false,
       style: "",
@@ -167,10 +170,10 @@ setTimeout(() => {
     {
       name: "contestLayout",
       titleDom: document.querySelector(
-        "#base_content > div.container > div > div > div.question-title.clearfix > h3"
+        "#base_content > div.container > div > div > div.question-title.clearfix > h3",
       ),
       descriptionDom: document.querySelector(
-        "div.question-content.default-content"
+        "div.question-content.default-content",
       ),
       useStyle: true,
       style: `display: flex;`,
@@ -180,7 +183,7 @@ setTimeout(() => {
       name: "dynamicLayout",
       titleDom: document.querySelector(".text-title-large"),
       descriptionDom: document.querySelector(
-        "[data-track-load=description_content]"
+        "[data-track-load=description_content]",
       ),
       useStyle: true,
       style: `display: flex;`,
@@ -244,7 +247,7 @@ setTimeout(() => {
         _button.innerText = BUTTON_ACTION_TEXT;
         setTimeout(
           () => (_button.innerText = BUTTON_MAP[button].text),
-          BUTTON_ACTION_WAIT_TIME
+          BUTTON_ACTION_WAIT_TIME,
         );
       });
 
