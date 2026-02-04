@@ -33,19 +33,8 @@ const MARKDOWN = {
   "</li>": "",
   "<em>": "",
   "</em>": "",
-  "<br>": "",
-  "&nbsp;": "",
-  "<strong>Input</strong>": "Input\n",
-  "<strong>Output</strong>": "Output\n",
-  "<strong>Explanation</strong>": "Explanation\n",
-  "<strong>Input:</strong>": "Input:",
-  "<strong>Output:</strong>": "Output:",
-  "<strong>Explanation:</strong>": "Explanation:",
-  "<strong>Input: </strong>": "Input: ",
-  "<strong>Output: </strong>": "Output: ",
-  "<strong>Explanation: </strong>": "Explanation: ",
-  "<strong>": "**",
-  "</strong>": "**",
+  "<font>": "",
+  "</font>": "",
   "<pre>": "\n```\n",
   "</pre>": "```\n\n",
   "<code>": "`",
@@ -56,11 +45,24 @@ const MARKDOWN = {
   "</sup>": "",
   "<sub>": "_",
   "</sub>": "",
-  "	": "", // special tab
   "<span.*?>": "",
   "</span>": "",
-  '<font face="monospace">': "",
-  "</font>": "",
+  "<b>": "**",
+  "</b>": "**",
+  "<strong>": "**",
+  "</strong>": "**",
+  "<strong>Input</strong>": "Input\n",
+  "<strong>Output</strong>": "Output\n",
+  "<strong>Explanation</strong>": "Explanation\n",
+  "<strong>Input:</strong>": "Input:",
+  "<strong>Output:</strong>": "Output:",
+  "<strong>Explanation:</strong>": "Explanation:",
+  "<strong>Input: </strong>": "Input: ",
+  "<strong>Output: </strong>": "Output: ",
+  "<strong>Explanation: </strong>": "Explanation: ",
+  "<br>": "",
+  "&nbsp;": "",
+  "	": "", // special tab
 };
 
 const copyText = (isMarkdown, targetObj) => {
@@ -76,7 +78,9 @@ const copyText = (isMarkdown, targetObj) => {
   // Get difficulty
   const difficulty =
     targetObj.difficultyDom?.innerText?.trim() ||
-    document.querySelector('div[class*="text-difficulty-"]')?.innerText?.trim() ||
+    document
+      .querySelector('div[class*="text-difficulty-"]')
+      ?.innerText?.trim() ||
     "Unknown";
 
   // Clean URL
@@ -86,7 +90,9 @@ const copyText = (isMarkdown, targetObj) => {
   const descriptionContent = targetObj.descriptionDom;
 
   // Clean the content to be copied
-  const text = descriptionContent.textContent.replace(/(\n){2,}/g, "\n\n").trim();
+  const text = descriptionContent.textContent
+    .replace(/(\n){2,}/g, "\n\n")
+    .trim();
   const html = descriptionContent.innerHTML;
 
   // Create a hidden textarea element.
@@ -104,14 +110,14 @@ const copyText = (isMarkdown, targetObj) => {
           return srcMatch ? srcMatch[1] : "";
         }
         return `<${tagName}${selfClosing}>`;
-      }
+      },
     );
 
     // Replace HTML elements with markdown equivalents.
     Object.keys(MARKDOWN).forEach((key) => {
       htmlToMarkdown = htmlToMarkdown.replace(
         new RegExp(key, "g"),
-        MARKDOWN[key]
+        MARKDOWN[key],
       );
     });
     // Format the markdown string and add the title and URL.
@@ -144,7 +150,7 @@ setTimeout(() => {
       titleDom: document.querySelector("[data-cy=question-title]"),
       difficultyDom: document.querySelector("[data-cy=question-difficulty]"),
       descriptionDom: document.querySelector(
-        "[data-track-load=description_content]"
+        "[data-track-load=description_content]",
       ),
       useStyle: true,
       style: `
@@ -158,11 +164,11 @@ setTimeout(() => {
     {
       name: "newLayout",
       titleDom: document.querySelector(
-        ".mr-2.text-lg.font-medium.text-label-1.dark\\:text-dark-label-1"
+        ".mr-2.text-lg.font-medium.text-label-1.dark\\:text-dark-label-1",
       ),
       difficultyDom: document.querySelector('div[class*="text-difficulty-"]'),
       descriptionDom: document.querySelector(
-        "[data-track-load=description_content]"
+        "[data-track-load=description_content]",
       ),
       useStyle: false,
       style: "",
@@ -178,11 +184,11 @@ setTimeout(() => {
     {
       name: "contestLayout",
       titleDom: document.querySelector(
-        "#base_content > div.container > div > div > div.question-title.clearfix > h3"
+        "#base_content > div.container > div > div > div.question-title.clearfix > h3",
       ),
       difficultyDom: null,
       descriptionDom: document.querySelector(
-        "div.question-content.default-content"
+        "div.question-content.default-content",
       ),
       useStyle: true,
       style: `display: flex;`,
@@ -193,7 +199,7 @@ setTimeout(() => {
       titleDom: document.querySelector(".text-title-large"),
       difficultyDom: document.querySelector('div[class*="text-difficulty-"]'),
       descriptionDom: document.querySelector(
-        "[data-track-load=description_content]"
+        "[data-track-load=description_content]",
       ),
       useStyle: true,
       style: `display: flex;`,
