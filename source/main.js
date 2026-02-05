@@ -84,7 +84,7 @@ const copyText = (isMarkdown, targetObj) => {
     "Unknown";
 
   // Clean URL
-  const cleanUrl = url.replace(/\/description\/?$/, "").replace(/\/$/, "");
+  const cleanUrl = url.split("?")[0].split("#")[0].replace(/\/description\/?$/, "").replace(/\/$/, "");
 
   // Get main problem description
   const descriptionContent = targetObj.descriptionDom;
