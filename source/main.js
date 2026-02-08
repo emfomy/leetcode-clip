@@ -47,10 +47,7 @@ const MARKDOWN = {
   "</sub>": "",
   "<span.*?>": "",
   "</span>": "",
-  "<b>": "**",
-  "</b>": "**",
-  "<strong>": "**",
-  "</strong>": "**",
+
   "<strong>Input</strong>": "Input\n",
   "<strong>Output</strong>": "Output\n",
   "<strong>Explanation</strong>": "Explanation\n",
@@ -60,6 +57,11 @@ const MARKDOWN = {
   "<strong>Input: </strong>": "Input: ",
   "<strong>Output: </strong>": "Output: ",
   "<strong>Explanation: </strong>": "Explanation: ",
+  "<strong>": "**",
+  "</strong>": "**",
+  "<b>": "**",
+  "</b>": "**",
+
   "<br>": "",
   "&nbsp;": "",
   "	": "", // special tab
