@@ -131,8 +131,8 @@ const copyText = (isMarkdown, targetObj) => {
     value = `Source: ${cleanUrl}\nTitle: ${cleanTitle}\nDifficulty: ${difficulty}\n\n${text}`;
   }
 
-  // Set the value of the hidden textarea element.
-  hiddenElement.value = value;
+  // Set the value of the hidden textarea element and remove zero-width spaces and other invisible characters.
+  hiddenElement.value = value.replace(/[\u200B-\u200D\uFEFF]/g, "");
   // Add the element to the document.
   document.body.appendChild(hiddenElement);
   // Select the text in the element.
